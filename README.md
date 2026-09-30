@@ -1,196 +1,432 @@
-# AI Driven commerce-platform
+# 🛒 commerce-platform
 
-SPA de commerce-platform con dos roles de usuario (customer/admin), autenticación con Firebase, catálogo con filtros y búsqueda, carrito con Context API + useReducer, checkout con órdenes persistidas, panel de administración con upload de imágenes a AWS S3 vía presigned URLs, y testing con Vitest + React Testing Library. Proyecto Integrador 5 — Henry, especialización Frontend.
+Plataforma de comercio electrónico desarrollada con **React, TypeScript y Firebase**, con dos roles de usuario: cliente y administrador.
 
-**Demo en vivo:** https://ai-ecommerce-sigma.vercel.app
+Incluye autenticación, catálogo con búsqueda y filtros, carrito de compras, checkout, gestión de órdenes, panel administrativo, carga segura de imágenes mediante AWS S3 y testing automatizado.
 
-## Contexto del proyecto
+Proyecto Integrador 5 — Henry, especialización Frontend.
 
-Patagonix Tech es una software factory especializada en aplicaciones web para retail. Este proyecto simula una plataforma de e-commerce solicitada por un cliente del sector, que necesita soportar dos tipos de usuarios: clientes que navegan y compran, y administradores que gestionan catálogo y órdenes — con una solución basada en servicios administrados (BaaS) para reducir costos de infraestructura.
+🔗 **Demo en vivo:**  
+https://ai-ecommerce-sigma.vercel.app/
 
-## Stack tecnológico
+---
 
-- **Frontend:** React 18 + TypeScript + Vite + React Router
-- **Backend as a Service:** Firebase (Authentication + Firestore)
-- **Almacenamiento de imágenes:** AWS S3 con presigned URLs
-- **Backend serverless:** Vercel Serverless Functions
-- **Estado global:** Context API + useReducer (carrito), Context API (auth)
-- **Testing:** Vitest + React Testing Library
-- **Deploy:** Vercel
+## 📸 Capturas
 
-## Arquitectura
+> Próximamente se agregarán capturas de las principales funcionalidades de la aplicación.
 
-El proyecto está organizado **por features** (Screaming Architecture): con solo mirar `src/features/`, se entiende que es un e-commerce con auth, productos, carrito, órdenes y administración — sin necesidad de abrir el código.
 
-```
+### Catálogo
+![Catálogo](./docs/catalogo.png)
+
+### Carrito y checkout
+![Carrito](./docs/carrito.png)
+
+### Panel de administración
+![Panel de administración](./docs/admin.png)
+
+
+---
+
+## ✨ Funcionalidades principales
+
+### 👤 Cliente
+
+- Registro e inicio de sesión.
+- Autenticación con email/contraseña y Google.
+- Navegación del catálogo de productos.
+- Búsqueda y filtrado de productos.
+- Vista de detalle de producto.
+- Carrito de compras.
+- Checkout.
+- Creación y consulta de órdenes.
+- Rutas protegidas para usuarios autenticados.
+
+### 🛠️ Administrador
+
+- Acceso mediante rol de administrador.
+- Panel administrativo protegido.
+- Gestión del catálogo de productos.
+- Carga de imágenes mediante AWS S3.
+- Gestión de órdenes.
+- Actualización de información en tiempo real.
+- Protección de operaciones mediante reglas de Firestore.
+
+---
+
+## 🧰 Stack tecnológico
+
+### Frontend
+
+- React 18
+- TypeScript
+- Vite
+- React Router
+- Context API
+- useReducer
+
+### Backend y servicios
+
+- Firebase Authentication
+- Firebase Firestore
+- Vercel Serverless Functions
+- AWS S3
+
+### Testing
+
+- Vitest
+- React Testing Library
+
+### Deploy
+
+- Vercel
+
+---
+
+## 🏗️ Arquitectura
+
+El proyecto está organizado **por características (Screaming Architecture)**.
+
+La estructura permite identificar los principales dominios de la aplicación directamente desde `src/features/`: autenticación, productos, carrito, órdenes y administración.
+
+```text
 src/
 ├─ features/
-│  ├─ auth/          # Login, registro (email + Google), Context de sesión y rol
-│  │  ├─ components/ contexts/ hooks/ services/ types/ utils/
-│  ├─ products/       # Catálogo: listar, filtrar, buscar, ver detalle
-│  │  ├─ components/ hooks/ services/ types/
-│  ├─ cart/           # Carrito: Context + useReducer
-│  │  ├─ contexts/ reducers/ hooks/ types/
-│  ├─ orders/         # Checkout y órdenes del customer
-│  │  ├─ components/ services/ types/
-│  └─ admin/          # Panel de administración
-│     ├─ components/ services/ pages/ types/
+│  ├─ auth/
+│  │  ├─ components/
+│  │  ├─ contexts/
+│  │  ├─ hooks/
+│  │  ├─ services/
+│  │  ├─ types/
+│  │  └─ utils/
+│  │
+│  ├─ products/
+│  │  ├─ components/
+│  │  ├─ hooks/
+│  │  ├─ services/
+│  │  └─ types/
+│  │
+│  ├─ cart/
+│  │  ├─ contexts/
+│  │  ├─ reducers/
+│  │  ├─ hooks/
+│  │  └─ types/
+│  │
+│  ├─ orders/
+│  │  ├─ components/
+│  │  ├─ services/
+│  │  └─ types/
+│  │
+│  └─ admin/
+│     ├─ components/
+│     ├─ services/
+│     ├─ pages/
+│     └─ types/
 │
-├─ pages/             # Vistas que orquestan varios features (Login, Cart, Checkout...)
-├─ components/        # UI compartida entre features (Header)
-├─ routes/            # ProtectedRoute (sesión) y AdminRoute (sesión + rol)
-├─ services/          # firebase.ts — inicialización compartida por todos los features
-├─ hooks/             # useDebounce — utilidad genérica sin dominio propio
-└─ test/              # Setup de Vitest, wrapper de providers, tests de integración
+├─ pages/
+├─ components/
+├─ routes/
+├─ services/
+├─ hooks/
+└─ test/
 
 api/
-└─ get-upload-url.ts  # Función serverless: genera presigned URLs para subir a S3
+└─ get-upload-url.ts
 ```
 
-## Decisiones arquitectónicas
+---
 
-**Organización por features, no por capas técnicas.** Con dos experiencias de usuario tan distintas (customer vs. admin) y cinco dominios de negocio claros, agrupar por feature evita mezclar en una misma carpeta código que en la práctica nunca se toca en la misma sesión de trabajo.
+## 🧠 Decisiones arquitectónicas
 
-**Dos Contexts separados (Auth y Cart), nunca uno solo.** Son dominios de estado independientes — mezclarlos generaría acoplamiento innecesario entre identidad y compras, dificultando testear cada uno por separado.
+### Organización por características
 
-**useReducer en vez de useState para el carrito.** El carrito tiene múltiples acciones que transforman el estado de formas distintas. Centralizar esa lógica en un reducer puro la hace predecible, fácil de leer de punta a punta, y trivial de testear (mismo estado + misma acción = siempre el mismo resultado).
+El proyecto utiliza una estructura organizada por funcionalidades en lugar de separar únicamente por capas técnicas.
 
-**El rol de usuario vive en Firestore, no en Firebase Auth.** Firebase Auth solo maneja identidad. Se modela como un campo `role` en `users/{uid}`, y las reglas de Firestore bloquean cualquier intento de que un usuario edite su propio rol (`allow update: if false`).
+Esto permite mantener agrupado el código relacionado con cada dominio de negocio y facilita identificar rápidamente las principales áreas de la aplicación.
 
-**Presigned URLs para subir imágenes, nunca directo con credenciales en el frontend.** El navegador jamás recibe las credenciales de AWS. Pide a nuestra función serverless una URL temporal firmada, y sube el archivo directo a S3 con esa URL.
+### Auth y Cart separados
 
-**`onSnapshot` (tiempo real) para el admin, `getDocs` (consulta puntual) para el customer.** El catálogo público no necesita reflejar cambios en vivo. El panel admin sí se beneficia de ver cambios reflejados al instante.
+La autenticación y el carrito utilizan contextos independientes.
 
-## Flujo de upload de imágenes con presigned URLs
+Son dominios de estado diferentes, por lo que separarlos reduce el acoplamiento y facilita su mantenimiento y testing.
 
-1. El admin selecciona una imagen en el formulario de producto.
-2. El frontend le pide a `/api/get-upload-url` (función serverless) una URL de subida, mandando nombre y tipo del archivo.
-3. La función valida esos datos, arma un `PutObjectCommand` describiendo la operación exacta (bucket, key única con timestamp, tipo de contenido), y usa `getSignedUrl` para firmarlo con las credenciales del servidor.
-4. Devuelve dos URLs: una temporal firmada (válida 5 minutos, para subir) y una pública permanente (para mostrar la imagen después).
-5. El frontend usa la URL temporal para subir el archivo **directo a S3** con un `PUT`, sin pasar por nuestro servidor.
-6. La URL pública permanente se guarda en Firestore como `imageUrl` del producto.
+### useReducer para el carrito
 
-Este diseño evita que las credenciales de AWS viajen al navegador, y que el archivo pesado tenga que pasar por Vercel Functions.
+El carrito posee múltiples acciones que modifican el mismo estado.
 
-## Instalación y desarrollo local
+Centralizar estas operaciones mediante `useReducer` permite mantener la lógica de actualización en una función predecible y fácilmente testeable.
 
-Requiere Node 18+, una cuenta de Firebase con Authentication (Email/Password + Google) y Firestore habilitados, y una cuenta de AWS con un bucket de S3 configurado.
+### Roles almacenados en Firestore
 
-```bash
-git clone https://github.com/GonzaloB1/ProyectoM5_GonzaloBastias.git
-cd ProyectoM5_GonzaloBastias
-npm install
-cp .env.example .env
-vercel dev
+Firebase Authentication administra la identidad del usuario, mientras que el rol se almacena en:
+
+```text
+users/{uid}
 ```
 
-Se usa `vercel dev` en vez de `npm run dev` porque el proyecto incluye una función serverless que Vite por sí solo no puede servir.
+Las reglas de Firestore impiden que un usuario pueda modificar su propio rol.
 
-### Scripts disponibles
+### Actualizaciones según el contexto
 
-| Comando | Qué hace |
-|---|---|
-| `npm run dev` | Levanta el frontend con Vite (no sirve `/api/*`) |
-| `vercel dev` | Levanta frontend + función serverless simulada |
-| `npm run build` | Type-check (`tsc -b`) + build de producción |
-| `npm run test` | Corre la suite de Vitest |
-| `npm run preview` | Sirve el build de producción localmente |
+Para el catálogo público se utilizan consultas puntuales mediante `getDocs`.
 
-### Configuración del bucket de S3
+En el panel administrativo se utiliza `onSnapshot`, permitiendo reflejar cambios en tiempo real.
 
-1. Crear un bucket en S3 (ACLs disabled, Block Public Access activado por defecto).
-2. Configurar CORS del bucket permitiendo `PUT` y `GET` desde los orígenes de desarrollo y producción.
-3. Desbloquear específicamente las dos opciones de "bucket policies" en Block Public Access, y aplicar una bucket policy que otorgue `s3:GetObject` público — solo lectura.
-4. Crear un usuario IAM sin acceso a consola, con policy `AmazonS3FullAccess`, y generar sus Access Keys.
+---
 
-## Variables de entorno
+## ☁️ Carga de imágenes con AWS S3
 
-`.env` nunca se sube al repositorio; `.env.example` sí, sin valores reales. Las variables `VITE_*` son visibles desde el navegador — las de AWS solo existen del lado del servidor.
+Las imágenes de los productos se cargan utilizando **URLs prefirmadas de AWS S3**.
 
-| Variable | Dónde se usa | Descripción |
-|---|---|---|
-| `VITE_FIREBASE_API_KEY` | Frontend | Config del proyecto de Firebase |
-| `VITE_FIREBASE_AUTH_DOMAIN` | Frontend | Dominio de autenticación de Firebase |
-| `VITE_FIREBASE_PROJECT_ID` | Frontend | ID del proyecto de Firebase |
-| `VITE_FIREBASE_STORAGE_BUCKET` | Frontend | Bucket de Firebase Storage |
-| `VITE_FIREBASE_MESSAGING_SENDER_ID` | Frontend | Sender ID de Firebase Cloud Messaging |
-| `VITE_FIREBASE_APP_ID` | Frontend | ID de la app de Firebase |
-| `AWS_REGION` | Serverless (`api/`) | Región de AWS donde vive el bucket de S3 |
-| `AWS_ACCESS_KEY_ID` | Serverless (`api/`) | Credencial de un usuario IAM con permisos de S3 |
-| `AWS_SECRET_ACCESS_KEY` | Serverless (`api/`) | Secret correspondiente al access key |
-| `AWS_S3_BUCKET_NAME` | Serverless (`api/`) | Nombre del bucket donde se guardan las imágenes |
+Esto permite realizar las cargas sin exponer credenciales de AWS en el navegador.
 
-En Vercel, guardar una variable nueva no alcanza para que un deploy ya existente la tome — hace falta un redeploy (`vercel --prod`).
+### Flujo
 
-## Testing
+1. El administrador selecciona una imagen.
+2. El frontend solicita una URL de subida a `/api/get-upload-url`.
+3. La función serverless valida los datos del archivo.
+4. Se genera una URL prefirmada mediante AWS SDK.
+5. La URL temporal se devuelve al frontend.
+6. El navegador realiza directamente un `PUT` hacia S3.
+7. La URL pública de la imagen se almacena en Firestore.
+
+La URL prefirmada tiene una duración limitada y las credenciales de AWS permanecen únicamente del lado del servidor.
+
+---
+
+## 🔐 Seguridad
+
+El proyecto implementa diferentes medidas para proteger información y operaciones sensibles:
+
+- `.env` está incluido en `.gitignore`.
+- `.env.example` documenta las variables necesarias sin valores reales.
+- Las credenciales de AWS solo existen en la función serverless.
+- Las reglas de Firestore validan permisos administrativos.
+- Un usuario no puede modificar su propio rol.
+- Las órdenes nuevas se validan para comenzar con estado `pending`.
+- Las operaciones de carga en S3 requieren una URL prefirmada válida.
+- Las rutas administrativas están protegidas en el frontend.
+
+---
+
+## 🧪 Testing
+
+La aplicación utiliza **Vitest y React Testing Library**.
+
+Para ejecutar los tests:
 
 ```bash
 npm run test
 ```
 
-- **Reducer del carrito**: cubre las 4 acciones, incluyendo el caso borde de cantidad ≤ 0.
-- **Custom hooks aislados**: `useDebounce` con fake timers, `useCart` con un wrapper de providers.
-- **Wrapper de providers**: centraliza `BrowserRouter` + `AuthProvider` + `CartProvider` para reusar en cualquier test.
-- **Componente con mock de auth**: `AdminRoute` mockeando `useAuth`, verificando las 4 ramas de decisión.
-- **Test de integración**: simula agregar un producto al carrito y confirma sincronización entre componentes vía `CartProvider` real.
+La suite incluye pruebas sobre:
 
-## Seguridad
+- Reducer del carrito.
+- Acciones y casos límite del carrito.
+- Hook `useDebounce` utilizando fake timers.
+- Hook `useCart`.
+- Providers compartidos.
+- Rutas administrativas.
+- Diferentes estados de autenticación.
+- Integración entre componentes y `CartProvider`.
 
-- `.env` está en `.gitignore`; `.env.example` documenta las claves sin valores reales.
-- Las credenciales de AWS nunca llegan al bundle del cliente — solo existen dentro de `api/get-upload-url.ts`.
-- Las reglas de Firestore verifican el rol de admin del lado del servidor para escribir productos y actualizar órdenes — no dependen únicamente de `AdminRoute`, que es solo protección de UX.
-- Un usuario no puede modificar su propio rol (`allow update: if false` en `users`).
-- Toda orden nueva se valida del lado del servidor para que nazca en estado `"pending"`.
-- El bucket de S3 solo permite lectura pública; subir y borrar están cerrados salvo con una presigned URL válida.
+---
 
-## Bitácora de uso de IA
+## 🚀 Instalación y desarrollo local
 
-Se utilizó Claude (Anthropic) como asistente durante todo el desarrollo, en modalidad guiada paso a paso: se pedía la explicación conceptual de cada etapa antes de escribir código, y cada bloque se revisaba y ejecutaba manualmente antes de avanzar.
+### Requisitos
 
-### 1. Decisión de arquitectura: features vs. capas técnicas
+Para ejecutar el proyecto se necesita:
 
-**Consulta:** se preguntó explícitamente cuál organización de carpetas convenía para este proyecto, dado que ya se conocía el enfoque por capas técnicas de un proyecto anterior.
+- Node.js 18+
+- npm
+- Firebase
+- Firestore
+- AWS S3
+- Vercel CLI
 
-**Aprendizaje:** la elección depende de la cantidad de dominios de negocio distintos y de cuánto se solapan. Con un solo dominio, capas técnicas alcanza; con cinco dominios bien diferenciados y dos experiencias de usuario casi independientes, organizar por feature hace que la estructura "cuente la historia" del proyecto sin leer código.
+### 1. Clonar el repositorio
 
-**Decisión:** se adoptó organización por features, con la justificación lista para defender en la presentación.
+```bash
+git clone https://github.com/GonzaloB1/ProyectoM5_GonzaloBastias.git
+```
 
-### 2. Por qué useReducer y no useState para el carrito
+### 2. Entrar al proyecto
 
-**Consulta:** antes de escribir el reducer, se pidió explicar el motivo detrás de usar `useReducer` en vez de varios `useState`.
+```bash
+cd ProyectoM5_GonzaloBastias
+```
 
-**Aprendizaje:** con múltiples acciones que transforman el mismo estado de formas distintas, `useState` dispersa la lógica en varias funciones separadas. `useReducer` centraliza toda esa lógica en una función pura, más predecible y trivial de testear sin mocks.
+### 3. Instalar dependencias
 
-**Decisión:** se implementó `cartReducer` con 4 acciones tipadas mediante una unión discriminada, aprovechando que TypeScript infiere la forma del `payload` según el `type`.
+```bash
+npm install
+```
 
-### 3. Debugging del checksum automático de AWS SDK en presigned URLs
+### 4. Crear las variables de entorno
 
-**Situación:** al subir una imagen desde el formulario de admin, la petición `PUT` a S3 fallaba con `ERR_FAILED`, un error de red genérico.
+```bash
+cp .env.example .env
+```
 
-**Aprendizaje:** en vez de asumir que era CORS (la causa más común de ese síntoma), se investigó capa por capa. Se confirmó que la función serverless generaba la URL correctamente, y se identificó que el SDK v3 de AWS calcula automáticamente un checksum al firmar la URL — pero el archivo real todavía no existe en ese momento, así que el checksum no coincide con lo que el navegador sube después.
+### 5. Ejecutar el proyecto
 
-**Decisión:** se desactivó ese cálculo automático explícitamente (`requestChecksumCalculation: "WHEN_REQUIRED"`) en el cliente de S3.
+```bash
+vercel dev
+```
 
-### 4. Validación de alcance: pago simulado, sin pasarela real
+Se utiliza `vercel dev` porque el proyecto incluye una función serverless dentro de `/api`.
 
-**Consulta:** se consultó cómo estructurar el flujo de checkout antes de implementarlo.
+Vite por sí solo no sirve esas funciones.
 
-**Aprendizaje:** la consigna es explícita en que el pago es simulado, sin integración con ninguna pasarela real. Se discutió el orden correcto de operaciones: crear la orden antes de vaciar el carrito, para que un error no le haga perder al usuario su selección sin haber completado la compra.
+---
 
-**Decisión:** el botón de confirmar compra crea directamente la orden con estado `"pending"`, sin simulación de procesamiento de pago adicional.
+## ⚙️ Scripts disponibles
 
-### 5. Corrección de rutas de SPA en producción (404 en Vercel)
+| Comando | Descripción |
+| --- | --- |
+| `npm run dev` | Ejecuta únicamente el frontend con Vite |
+| `vercel dev` | Ejecuta frontend + función serverless |
+| `npm run build` | Verifica tipos y genera el build de producción |
+| `npm run test` | Ejecuta la suite de tests |
+| `npm run preview` | Ejecuta localmente el build de producción |
 
-**Situación:** en producción, entrar directamente a `/login` o recargar en cualquier ruta devolvía un error 404, algo que nunca pasaba en desarrollo local.
+---
 
-**Aprendizaje:** el servidor de desarrollo de Vite sirve automáticamente `index.html` para cualquier ruta. Vercel en producción no asume ese comportamiento por defecto — busca un archivo o carpeta con ese nombre exacto.
+## 🔑 Variables de entorno
 
-**Decisión:** se agregó `vercel.json` con una regla de rewrite para que cualquier ruta no reconocida sirva igual `index.html`, delegando el ruteo real a React Router del lado del cliente.
+El archivo `.env` no debe subirse al repositorio.
 
-### 6. Priorización de tiempo: funcionalidad antes que diseño visual
+El proyecto utiliza:
 
-**Consulta:** se consultó cuánto tiempo dedicarle al CSS para que el proyecto "aparente una tienda real y profesional".
+```env
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=
+VITE_FIREBASE_PROJECT_ID=
+VITE_FIREBASE_STORAGE_BUCKET=
+VITE_FIREBASE_MESSAGING_SENDER_ID=
+VITE_FIREBASE_APP_ID=
 
-**Aprendizaje:** dado el volumen de pantallas distintas de un e-commerce, el CSS podía llevar varias horas — y la rúbrica de corrección pesa mucho más la arquitectura, la seguridad y la funcionalidad completa que el pulido visual.
+AWS_REGION=
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_S3_BUCKET_NAME=
+```
 
-**Decisión:** se dejó el CSS para el final del proyecto, priorizando tener una aplicación evaluable y estable antes que una visualmente atractiva pero con riesgo de quedar incompleta.
+Las variables `VITE_*` son utilizadas por el frontend.
+
+Las credenciales de AWS permanecen únicamente del lado del servidor dentro de las funciones serverless.
+
+---
+
+## 🪣 Configuración de AWS S3
+
+Para utilizar la carga de imágenes es necesario configurar un bucket de AWS S3.
+
+El flujo utilizado por la aplicación requiere:
+
+1. Crear un bucket de S3.
+2. Configurar CORS para permitir las operaciones necesarias desde desarrollo y producción.
+3. Configurar acceso público de lectura para las imágenes que deben mostrarse en la tienda.
+4. Configurar los permisos necesarios para generar las URLs prefirmadas.
+5. Agregar las credenciales correspondientes a las variables de entorno del servidor.
+
+Las credenciales nunca deben incluirse directamente en el código fuente.
+
+---
+
+## 🤖 Uso de inteligencia artificial durante el desarrollo
+
+Durante el desarrollo se utilizó **Claude (Anthropic)** como asistente de aprendizaje y apoyo técnico.
+
+La IA se utilizó principalmente para comprender conceptos, analizar alternativas y acompañar la resolución de problemas. Las soluciones fueron revisadas, implementadas y probadas manualmente antes de continuar.
+
+### Arquitectura del proyecto
+
+Se analizaron diferentes formas de organizar el código, especialmente la diferencia entre una estructura por capas técnicas y una estructura por características.
+
+Finalmente se adoptó una organización por características debido a los distintos dominios presentes en el proyecto.
+
+### useReducer para el carrito
+
+Se analizó cuándo utilizar `useReducer` en lugar de múltiples estados independientes.
+
+La decisión permitió centralizar las operaciones del carrito dentro de un reducer tipado.
+
+### Debugging de AWS S3
+
+Durante la implementación de URLs prefirmadas apareció un error al realizar el `PUT` hacia S3.
+
+El problema se investigó por etapas hasta identificar el comportamiento del checksum automático del AWS SDK v3.
+
+La configuración fue ajustada utilizando:
+
+```ts
+requestChecksumCalculation: "WHEN_REQUIRED"
+```
+
+### Flujo de checkout
+
+Se analizó el orden correcto de las operaciones del checkout.
+
+La aplicación crea primero la orden con estado:
+
+```text
+pending
+```
+
+y posteriormente completa el flujo correspondiente, evitando perder el contenido del carrito ante un error.
+
+El proyecto utiliza un pago simulado y no integra una pasarela de pagos real.
+
+### React Router y Vercel
+
+Durante el despliegue se detectó que acceder directamente a rutas como:
+
+```text
+/login
+```
+
+provocaba un error `404`.
+
+Se agregó una configuración mediante `vercel.json` para que las rutas de la SPA sean gestionadas correctamente por React Router.
+
+### Priorización del desarrollo
+
+Durante el proyecto se priorizaron:
+
+1. Funcionalidad.
+2. Arquitectura.
+3. Seguridad.
+4. Testing.
+5. Diseño visual.
+
+Esto permitió completar primero las partes funcionales y técnicas antes de dedicar tiempo al refinamiento visual.
+
+---
+
+## 📚 Aprendizajes
+
+Este proyecto me permitió profundizar conocimientos en:
+
+- Arquitectura de aplicaciones React.
+- Manejo de estado con Context API y useReducer.
+- Autenticación y autorización.
+- Firebase y Firestore.
+- Integración con AWS S3.
+- Serverless Functions.
+- Seguridad de credenciales.
+- Testing de componentes y hooks.
+- Debugging de integraciones externas.
+- Deploy de aplicaciones SPA.
+
+---
+
+## 👨‍💻 Autor
+
+**Gonzalo Bastias**
+
+Frontend Developer Jr. | React · TypeScript · Node.js
+
+- GitHub: https://github.com/GonzaloB1
+- LinkedIn: https://www.linkedin.com/in/gonzalo-bastias-161320430/
